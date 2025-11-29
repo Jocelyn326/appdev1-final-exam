@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTodos, setTheme } from "../features/todos/todosSlice";
 import AddTodoForm from "../components/AddTodoForm";
@@ -8,6 +8,7 @@ function Todos() {
   const dispatch = useDispatch();
   const todos = useSelector((state) => state.todos.items);
   const theme = useSelector((state) => state.todos.theme);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     dispatch(fetchTodos());
@@ -20,16 +21,19 @@ function Todos() {
     } else {
       document.body.className = "standard";
     }
+
+    // Update time every second
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
   }, [dispatch]);
 
   const changeTheme = (newTheme) => {
     dispatch(setTheme(newTheme));
     localStorage.setItem("savedTheme", newTheme);
     document.body.className = newTheme;
-  };
-
-  const getCurrentDateTime = () => {
-    return new Date().toLocaleString();
   };
 
   return (
@@ -59,7 +63,15 @@ function Todos() {
       </div>
 
       <div id="datetime">
-        <p>{getCurrentDateTime()}</p>
+        <p>{currentTime.toLocaleString('en-US', {
+          month: '2-digit',
+          day: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true
+        })}</p>
       </div>
 
       <div id="myUnOrdList">

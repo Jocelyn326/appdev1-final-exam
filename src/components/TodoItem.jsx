@@ -20,18 +20,22 @@ function TodoItem({ todo, theme }) {
   return (
     <div className={`todo ${theme}-todo ${todo.completed ? 'completed' : ''} ${isFalling ? 'fall' : ''}`}>
       <li className="todo-item">{todo.title}</li>
-      <button 
-        className={`check-btn ${theme}-button`} 
-        onClick={toggleComplete}
-      >
-        <i className="fas fa-check"></i>
-      </button>
-      <button 
-        className={`delete-btn ${theme}-button`} 
-        onClick={handleDelete}
-      >
-        <i className="fas fa-trash"></i>
-      </button>
+      <div style={{ display: 'flex', gap: '5px' }}>
+        <button 
+          className={`check-btn ${theme}-button`} 
+          onClick={toggleComplete}
+          aria-label="Complete todo"
+        >
+          <i className="fas fa-check"></i>
+        </button>
+        <button 
+          className={`delete-btn ${theme}-button`} 
+          onClick={handleDelete}
+          aria-label="Delete todo"
+        >
+          <i className="fas fa-trash"></i>
+        </button>
+      </div>
     </div>
   );
 }
